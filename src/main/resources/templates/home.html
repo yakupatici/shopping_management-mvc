@@ -4,221 +4,534 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | Company Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEasy | Modern Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Temel stiller */
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --secondary: #06B6D4;
+            --accent: #F43F5E;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-800: #1F2937;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7fafc;
-            color: #2d3748;
-            line-height: 1.6;
+            min-height: 100vh;
+            background-color: var(--gray-50);
+            display: flex;
+            overflow: hidden;
         }
 
-        /* Navbar stili */
-        .navbar {
-            background: linear-gradient(to right, #2c5282, #2b6cb0);
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .brand-logo {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
             padding: 1rem 2rem;
-            color: white;
+            border-bottom: 1px solid var(--gray-200);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .navbar h1 {
+        .header-title {
             font-size: 1.5rem;
             font-weight: 600;
+            color: var(--text-dark);
         }
 
-        /* Ana container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        /* Kartlar için grid layout */
-        .grid {
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--gray-200);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .logout-btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #E11D48;
+            transform: translateY(-1px);
+        }
+
+        /* Dashboard Content */
+        .dashboard {
+            padding: 2rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
 
-        /* Kart stili */
         .card {
-            background: white;
-            border-radius: 10px;
+            background: var(--white);
+            border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
         }
 
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--white);
+        }
+
+        .stats-card .card-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+
+        .tasks-card .card-icon {
+            background: linear-gradient(135deg, var(--secondary), var(--success));
+        }
+
+        .admin-card .card-icon {
+            background: linear-gradient(135deg, var(--warning), var(--accent));
         }
 
         .card-title {
-            font-size: 1.25rem;
-            color: #2d3748;
+            font-size: 1.1rem;
             font-weight: 600;
+            color: var(--text-dark);
         }
 
-        /* Kullanıcı bilgileri kartı */
-        .user-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .user-info .card-title,
-        .user-info p {
-            color: white;
-        }
-
-        /* Meeting kartları */
-        .meeting-card {
-            border-left: 4px solid #4299e1;
-        }
-
-        .meeting-link {
-            display: inline-block;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
             margin-top: 1rem;
-            color: #4299e1;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
         }
 
-        .meeting-link:hover {
-            color: #2b6cb0;
-        }
-
-        /* Mesaj stili */
-        .message {
+        .stat-item {
+            background: var(--gray-50);
             padding: 1rem;
             border-radius: 8px;
-            background-color: #ebf8ff;
-            color: #2c5282;
-            margin-top: 1rem;
-            display: none;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        /* Çıkış butonu */
-        .logout-btn {
-            background-color: #fc8181;
-            color: white;
+        .stat-item:hover {
+            background: var(--gray-100);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
+            color: var(--white);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
         }
 
-        .logout-btn:hover {
-            background-color: #f56565;
+        .action-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
-        /* Responsive tasarım */
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
+        .notification {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification i {
+            color: var(--warning);
+            font-size: 1.25rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
-            
-            .navbar {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .brand-logo span,
+            .nav-link span {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
                 padding: 1rem;
-                flex-direction: column;
-                text-align: center;
             }
-            
-            .navbar form {
-                margin-top: 1rem;
+
+            .nav-link i {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-title {
+                display: none;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .dashboard {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <h1>Company Dashboard</h1>
-        <form th:action="@{/logout}" method="POST">
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>
-    </nav>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="brand-logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>ShopEasy</span>
+            </a>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
 
-    <!-- Ana içerik -->
-    <div class="container">
-        <!-- Kullanıcı bilgileri grid -->
-        <div class="grid">
-            <!-- Kullanıcı bilgileri kartı -->
-            <div class="card user-info">
-                <div class="card-header">
-                    <h2 class="card-title">User Information</h2>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header-title">Dashboard Overview</h1>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" sec:authentication="name"></span>
+                        <span class="user-role" sec:authentication="principal.authorities"></span>
+                    </div>
                 </div>
-                <p>User: <span sec:authentication="name"></span></p>
-                <p>Role(s): <span sec:authentication="principal.authorities"></span></p>
+                <form th:action="@{/logout}" method="POST">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sign Out
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard">
+            <!-- Stats Card -->
+            <div class="card stats-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h2 class="card-title">Performance Overview</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Active Orders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">142</div>
+                        <div class="stat-label">Products</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee Tasks -->
+            <div sec:authorize="hasRole('EMPLOYEE')" class="card tasks-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h2 class="card-title">Daily Tasks</h2>
+                </div>
+                <p>View and manage your daily assignments</p>
+                <button class="action-btn" onclick="toggleMessage('employeeMessage')">
+                    <i class="fas fa-list-check"></i>
+                    View Tasks
+                </button>
+                <div id="employeeMessage" style="display: none;" class="notification">
+                    <i class="fas fa-bell"></i>
+                    <span>Team meeting scheduled for next Friday at 1 PM</span>
+                </div>
+            </div>
+
+            <!-- Manager Section -->
+            <div sec:authorize="hasRole('MANAGER')" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h2 class="card-title">Team Management</h2>
+                </div>
+                <p>Access team performance and reports</p>
+                <a th:href="@{/leaders}" class="action-btn">
+                    <i class="fas fa-chart-bar"></i>
+                    View Reports
+                </a>
+            </div>
+
+            <!-- Admin Section -->
+            <div sec:authorize="hasRole('ADMIN')" class="card admin-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2 class="card-title">System Administration</h2>
+                </div>
+                <p>Manage system settings and security</p>
+                <a th:href="@{/systems}" class="action-btn">
+                    <i class="fas fa-cogs"></i>
+                    System Settings
+                </a>
             </div>
         </div>
+    </main>
 
-        <!-- Toplantı kartları grid -->
-        <div class="grid">
-            <!-- Employee toplantı kartı -->
-            <div sec:authorize="hasRole('EMPLOYEE')" class="card meeting-card">
-                <div class="card-header">
-                    <h3 class="card-title">Employee Meeting</h3>
-                </div>
-                <p>Access regular team meetings and updates</p>
-                <a href="#" onclick="toggleMessage('employeeMessage')" class="meeting-link">
-                    Regular Employee Meeting →
-                </a>
-                <div id="employeeMessage" class="message">
-                    Monthly team lunch next Friday at 1 PM!
-                </div>
-            </div>
-
-            <!-- Manager toplantı kartı -->
-            <div sec:authorize="hasRole('MANAGER')" class="card meeting-card">
-                <div class="card-header">
-                    <h3 class="card-title">Leadership Meeting</h3>
-                </div>
-                <p>Access management meetings and resources</p>
-                <a th:href="@{/leaders}" class="meeting-link">
-                    Leadership Meeting →
-                </a>
-            </div>
-
-            <!-- Admin toplantı kartı -->
-            <div sec:authorize="hasRole('ADMIN')" class="card meeting-card">
-                <div class="card-header">
-                    <h3 class="card-title">Systems Meeting</h3>
-                </div>
-                <p>Access system administration meetings</p>
-                <a th:href="@{/systems}" class="meeting-link">
-                    IT Systems Meeting →
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
     <script>
         function toggleMessage(messageId) {
-            event.preventDefault();
             const message = document.getElementById(messageId);
-            message.style.display = message.style.display === 'none' || message.style.display === '' ? 'block' : 'none';
+            message.style.display = message.style.display === 'none' ? 'block' : 'none';
         }
     </script>
 </body>
