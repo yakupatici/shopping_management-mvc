@@ -1,0 +1,63 @@
+<!-- Thymeleaf template motoru için gerekli namespace tanımlaması -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied</title>
+    <!-- CSS Stilleri -->
+    <style>
+        /* Sayfa geneli için temel stiller */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #ffebee; /* Açık kırmızı arka plan */
+        }
+
+        /* Hata mesajı konteyneri */
+        .error-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hata başlığı */
+        h2 {
+            color: #d32f2f; /* Koyu kırmızı */
+        }
+
+        /* Ana sayfaya dönüş linki */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1976D2;
+            text-decoration: none;
+        }
+
+        /* Link hover efekti */
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hata mesajı konteyneri -->
+    <div class="error-container">
+        <!-- Hata başlığı -->
+        <h2>⚠️ Access Denied!</h2>
+        <hr>
+        <!-- Alt başlık -->
+        <h3>You are not authorized to access this page.</h3>
+        <!-- Açıklama metni -->
+        <p>
+            Sorry, you don't have the required permissions to view this resource.<br>
+            Please contact your administrator if you think this is a mistake.
+        </p>
+        <!-- Ana sayfaya dönüş linki -->
+        <a th:href="@{/}" class="back-link">← Back to Home Page</a>
+    </div>
+</body>
+</html>

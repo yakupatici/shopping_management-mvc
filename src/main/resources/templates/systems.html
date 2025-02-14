@@ -1,0 +1,24 @@
+<!-- Thymeleaf template motoru için gerekli namespace tanımlaması -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Systems Home Page</title>
+</head>
+<body>
+    <!-- Sayfa başlığı -->
+    <h2>Systems Home Page</h2>
+    <hr>
+    
+    <!-- Admin kullanıcılara özel mesaj -->
+    <p>
+        We have our annual holiday Caribbean cruise coming up!
+        <br>
+        This is only for ADMIN users.
+    </p>
+    <hr>
+    
+    <!-- Ana sayfaya dönüş linki -->
+    <a th:href="@{/}">Back to Home Page</a>
+</body>
+</html> 
